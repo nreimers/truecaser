@@ -24,7 +24,11 @@ The Code was written for Python 2.7 and requires NLTK 3.0.
 From NLTK, it uses the functions to spilt sentences into tokens and the FreqDist(). These parts of the code can easily be replaced, so that the code can be used without NLTK install.
 
 # Run the Code
-You need a `distributions.obj` that contains information on the frequencies of unigrams, bigrams, and trigrams. One large `distributions.obj` for English is provided in the download section of github.
+You need a `distributions.obj` that contains information on the frequencies of unigrams, bigrams, and trigrams. 
+
+A pre-trained `distributions.obj` for English is provided in the [release section](https://github.com/nreimers/truecaser/releases) (name: english_distribitions.obj.zip. Unzip it before you can use it).
+
+One large `distributions.obj` for English is provided in the download section of github.
 
 You can train your own `distributions.obj` using the `TrainTruecaser.py` script.
 
