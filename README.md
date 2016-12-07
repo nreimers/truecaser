@@ -35,7 +35,7 @@ You can train your own `distributions.obj` using the `TrainTruecaser.py` script.
 To run the code, have a look at `EvaluateTruecaser.py`. 
 
 # Train your own Truecaser
-You can retrain the Truecaser easily. Simply change the `train.txt` file with a large sample of sentences, change the `TrainTruecaser.py` such that is uses the `train.txt` and run the script. You can also it for other languages than English like German, Spanish, or French.
+You can retrain the Truecaser easily. Simply change the `train.txt` file with a large sample of sentences, change the `TrainTruecaser.py` such that is uses the `train.txt` and run the script. You can also use it for other languages than English like German, Spanish, or French.
 
 
 # Disclaimer
