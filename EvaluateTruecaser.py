@@ -92,7 +92,7 @@ def defaultTruecaserEvaluation(wordCasingLookup, uniDist, backwardBiDist, forwar
     evaluateTrueCaser(testSentences, wordCasingLookup, uniDist, backwardBiDist, forwardBiDist, trigramDist)
     
 if __name__ == "__main__":       
-    f = open('distributions.obj', 'rb')
+    f = open('english_distributions.obj', 'rb')
     uniDist = cPickle.load(f)
     backwardBiDist = cPickle.load(f)
     forwardBiDist = cPickle.load(f)
