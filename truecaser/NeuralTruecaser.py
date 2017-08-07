@@ -24,7 +24,7 @@ class NeuralTruecaser(AbstractTruecaser):
     def set_development_set(self, sentences):
         self.dev_sentences = sentences
         
-    def train(self, sentences, input_tokenized = False, max_epochs = 0):
+    def train(self, sentences, input_tokenized = False, max_epochs = 10):
         if input_tokenized == True:
             sentences = map(self.untokenize, sentences)
           
