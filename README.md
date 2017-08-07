@@ -21,7 +21,7 @@ The NeuralTruecaser requires Keras 1.x and Theano / Tensorflow as backend.
 
 # Train / Development / Test Files
 The `Evaluate.py` uses train, development and test files for training / evaluating the truecase models. You can find training / testing files for English / German / Turkish here:
-[http://public.ukp.informatik.tu-darmstadt.de/reimers/2017_Wikipedia_Truecase/wikipedia_train_dev_test_files.zip](Download wikipedia files for truecasing).
+[Download wikipedia files for truecasing](http://public.ukp.informatik.tu-darmstadt.de/reimers/2017_Wikipedia_Truecase/wikipedia_train_dev_test_files.zip).
 
 Unzip those to the `wikipedia/` folder.
 
