@@ -20,11 +20,13 @@ class NeuralTruecaser(AbstractTruecaser):
     def __init__(self):
         self.lstmSizes = [100]
         self.dev_sentences = []
+        self.train_sentence_cnt = 0
+        self.model_learning_rate = 0.01
         
     def set_development_set(self, sentences):
         self.dev_sentences = sentences
         
-    def train(self, sentences, input_tokenized = False, max_epochs = 10):
+    def train(self, sentences, input_tokenized = False, max_epochs = 20, verbose=True):
         if input_tokenized == True:
             sentences = map(self.untokenize, sentences)
           
@@ -48,10 +50,11 @@ class NeuralTruecaser(AbstractTruecaser):
         
         model.add(TimeDistributed(Dense(1, activation='sigmoid'), name='sigmoid_output'))            
                 
-        opt = Nadam(clipnorm=1)
+        opt = Adam(lr=self.model_learning_rate, clipnorm=1)
         model.compile(loss="binary_crossentropy", optimizer=opt)
         
         model.summary()
+        print(type(opt),opt.get_config())
         self.model = model
         
         print("Read in trainings data")
@@ -66,7 +69,7 @@ class NeuralTruecaser(AbstractTruecaser):
         last_dev_acc = 0
         for epoch in range(max_epochs):
             print("\nEpoch %d" % (epoch+1))   
-            self._train_network(trainData)      
+            self._train_network(trainData, verbose)      
             dev_acc = self.evaluate_on_development()
             
             if dev_acc < last_dev_acc:
@@ -175,12 +178,11 @@ class NeuralTruecaser(AbstractTruecaser):
             self.model = keras.models.load_model(fd.name)
         self.vocab = state['vocab']
     
-    def _train_network(self, trainData):
+    def _train_network(self, trainData, verbose):
         trainRanges = self._getSentenceLengthRanges(trainData)
         miniBatchRanges = self._getMinibatchRanges(trainData, trainRanges)
-        cnt = 0
         evalStep = 10000
-       
+        cnt = 0
         nextEval = evalStep
         
         
@@ -191,13 +193,27 @@ class NeuralTruecaser(AbstractTruecaser):
             labels = np.expand_dims(labels, -1)
             self.model.train_on_batch(tokens, labels)
             
+            self.train_sentence_cnt += dataRange[1]-dataRange[0]
             cnt += dataRange[1]-dataRange[0]
             
+            if verbose:
+                print("%d / %d" % (cnt, len(trainData)), end="\r")
+                sys.stdout.flush()
+                
             if cnt > nextEval:
-                print("Trained %d sentences" % cnt)
+                print("Trained %d sentences" % self.train_sentence_cnt)
                 self.evaluate_on_development()
                 nextEval += evalStep
                 print("")
+                
+            if self.train_sentence_cnt > 10000 and self.model_learning_rate > 0.005:
+                self.model_learning_rate = 0.005
+                self.model.optimizer.lr.set_value(self.model_learning_rate)
+                print("Update learning rate to: %f" % self.model_learning_rate)
+            if self.train_sentence_cnt > 20000 and self.model_learning_rate > 0.001:
+                self.model_learning_rate = 0.001
+                self.model.optimizer.lr.set_value(self.model_learning_rate)
+                print("Update learning rate to: %f" % self.model_learning_rate)
     
     def _getChars(self, line):
         data = []
