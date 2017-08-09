@@ -13,6 +13,7 @@ class StatisticalTruecaser(AbstractTruecaser):
         self.forwardBiDist = nltk.FreqDist() 
         self.trigramDist = nltk.FreqDist() 
         self.wordCasingLookup = {}
+        self.title_case_unknown_tokens = True
 
     
     def train(self, sentences, input_tokenized = False):
@@ -106,14 +107,11 @@ class StatisticalTruecaser(AbstractTruecaser):
             self.trigramDist[word1+"_"+word2+"_"+word3.lower()] += cnt
             
     
-    def truecase(self, sentence, input_tokenized=False, output_tokenized=False, title_case_start_sentence=True, outOfVocabularyTokenOption='title'):     
+    def truecase(self, sentence, input_tokenized=False, output_tokenized=False, title_case_start_sentence=True):     
         """
         Returns the true case for the passed tokens.
         @param tokens: Tokens in a single sentence
-        @param outOfVocabulariyTokenOption:
-            title: Returns out of vocabulary (OOV) tokens in 'title' format
-            lower: Returns OOV tokens in lower case
-            as-is: Returns OOV tokens as is
+      
         """
         if not input_tokenized:
             sentence = self.tokenize(sentence)
@@ -146,12 +144,11 @@ class StatisticalTruecaser(AbstractTruecaser):
                    
                         
                 else: #Token out of vocabulary
-                    if outOfVocabularyTokenOption.lower() == 'title':
+                    if self.title_case_unknown_tokens:
                         tokensTrueCase.append(token.title())
-                    elif outOfVocabularyTokenOption.lower() == 'lower':
-                        tokensTrueCase.append(token.lower())
                     else:
-                        tokensTrueCase.append(token) 
+                        tokensTrueCase.append(token.lower())
+                    
                         
         if title_case_start_sentence:
             #Title case the first token in a sentence

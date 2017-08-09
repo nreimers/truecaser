@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Run by:
-python lstm.py [LangCode] [ExpName]  [LSTMSizes]
-"""
+
 from __future__ import print_function
 import keras
 from keras.models import Sequential
@@ -18,7 +15,7 @@ from truecaser.AbstractTruecaser import AbstractTruecaser
 
 class NeuralTruecaser(AbstractTruecaser):
     def __init__(self):
-        self.lstmSizes = [100]
+        self.lstmSizes = [128, 64]
         self.dev_sentences = []
         self.train_sentence_cnt = 0
         self.model_learning_rate = 0.01
@@ -74,6 +71,9 @@ class NeuralTruecaser(AbstractTruecaser):
             
             if dev_acc < last_dev_acc:
                 print("Early stopping, accuracy on development set decreased")
+                break
+                
+            last_dev_acc = dev_acc
             
     def truecase(self, sentence, input_tokenized=False, output_tokenized=False, title_case_start_sentence=True):  
         if input_tokenized:

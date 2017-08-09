@@ -19,7 +19,7 @@ class GreedyTruecaser(AbstractTruecaser):
     title_case_unknown_tokens = True
     print_errors = False
     
-    
+     
     
     def train(self, sentences, input_tokenized = False):
         if not input_tokenized:

@@ -2,6 +2,7 @@ from __future__ import print_function
 import os
 import nltk
 import sys
+import random
 
 if (sys.version_info > (3, 0)):
     import pickle as pkl
@@ -17,26 +18,33 @@ from truecaser.NeuralTruecaser import NeuralTruecaser
 
 
 #Train, Development and Test files from wikipedia for some languages
-language = 'en'
-trainFile = 'wikipedia/%s/train_10k.txt' % language
+language = 'tr'
+trainFile = 'wikipedia/%s/train_100k.txt' % language
 devFile = 'wikipedia/%s/dev.txt' % language
 testFile = 'wikipedia/%s/test.txt' % language
 
 
 # :: Selection of the model ::
+
 #GreedyTruecaser: Generates a dictionary of uni-, bi- and trigrams and sets the casing to the most likely one
-model = GreedyTruecaser()
+#model = GreedyTruecaser()
+#model.use_bigrams = False
+#model.use_trigrams = False
+
 
 #StatisticalTruecaser: Uses a statistical model to infer the best casing. Statistical model is based on uni-, bi- and trigram statistics
-#model = StatisticalTruecaser()
+model = StatisticalTruecaser()
 
 #NeuralTruecaser: Uses a deep neural network to truecase sentences. Note: Neural networks are slow to train and to evaluate!
-model = NeuralTruecaser()
-model.set_development_set([line for line in open(devFile)])
+#model = NeuralTruecaser()
+#model.set_development_set([line for line in open(devFile)])
 
+
+if language == 'tr':
+    model.title_case_unknown_tokens = False
 
 #:: Output path for storing  models ::
-modelpath = "models/%s_%s.obj" % (language, model.__class__.__name__)
+modelpath = "models/%s_%s_%d.obj" % (language, model.__class__.__name__, random.randint(0,10000000))
 
 
 # ------------------------------------------------------------------------ #
@@ -123,13 +131,11 @@ if __name__ == '__main__':
         print("Train on "+trainFile)
         model.train(trainSentences)
     
-        
+       
     print("Evaluate on "+testFile)
     evaluate(model, testSentences)
     
-    print("Example sentence (truecased)")
-    print(model.truecase("hi, i live in new york and the white house is where god lives!"))
-    
+ 
     if train: #Store model when it was trained
         print("Store model in: %s" % modelpath)
         model.save(modelpath)
