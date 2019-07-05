@@ -32,7 +32,9 @@ One large `distributions.obj` for English is provided in the download section of
 
 You can train your own `distributions.obj` using the `TrainTruecaser.py` script.
 
-To run the code, have a look at `EvaluateTruecaser.py`. 
+To run the model on one (or multiple) text files, provide `distributions.obj` to the `PredictTruecase.py` script. If no text file(s) are provided as arguments, input is read from STDIN.
+
+To evaluate a model, have a look at `EvaluateTruecaser.py`. 
 
 # Train your own Truecaser
 You can retrain the Truecaser easily. Simply change the `train.txt` file with a large sample of sentences, change the `TrainTruecaser.py` such that is uses the `train.txt` and run the script. You can also use it for other languages than English like German, Spanish, or French.
