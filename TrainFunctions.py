@@ -75,7 +75,7 @@ def updateDistributionsFromSentences(text, wordCasingLookup, uniDist, backwardBi
         for tokenIdx in xrange(2, len(sentence)-1): #Start at 2 to skip first word in sentence
             prevWord = sentence[tokenIdx-1]
             curWord = sentence[tokenIdx]
-            curWordLower = word.lower()
+            curWordLower = curWord.lower()
             nextWordLower = sentence[tokenIdx+1].lower()
             
             if curWordLower in wordCasingLookup and len(wordCasingLookup[curWordLower]) >= 2: #Only if there are multiple options   
